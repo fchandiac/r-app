@@ -1,0 +1,79 @@
+body {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 4.7rem;
+  margin: 0 auto;
+}
+
+/* .MuiGrid-item {
+  padding: 0.35rem;
+} */
+
+.data-grid-last-column-header .MuiDataGrid-columnSeparator {
+  display: none;
+}
+
+.data-grid-cell-green {
+  background-color: #8bc34a54;
+
+}
+
+.data-grid-cell-red {
+  background-color: #f4433657;
+}
+
+.data-grid-cell-orange {
+  background-color: #f4433657;
+}
+
+.row-reception {
+  background-color: #ff6d00;
+}
+
+.row-settlement {
+  background-color: #aed581;
+}
+
+.row-tiny {
+  font-size: .65rem;
+  min-height: fit-content;
+  max-width: 10rem;
+  text-align: left;
+  width: fit-content;
+}
+
+.row-header-tiny {
+  font-size: .65rem;
+  font-weight: bold;
+  text-align: left;
+  max-width: 10rem;
+  min-height: fit-content;
+  width: fit-content;
+}
+
+.css-h2cton-MuiPaper-root-MuiTableContainer-root{
+  border-radius: 0;
+  border-bottom: 0
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.test {
+  background-color: rgb(30, 255, 0);
+}
+
+.small-date-picker .MuiInputBase-root {
+  font-size: .8rem;
+  padding: 1;
+} 
+
+.small-date-picker .css-i4bv87-MuiSvgIcon-root {
+  height: 1.2rem;
+  padding: 0;
+  margin: 0;
+}
