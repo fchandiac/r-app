@@ -11,7 +11,7 @@ const server_url = config.serverUrl
 
 
 
-export default function DistributionGrid(props) {
+export default function AllDistributionGrid(props) {
     const { recipient_id, updateFolder, closeDialog } = props
     const { user, update_folders, setUpdateFolders } = useAppContext()
     const distributions = useDistributions()
@@ -20,7 +20,8 @@ export default function DistributionGrid(props) {
 
     useEffect(() => {
         const fetch = async () => {
-            const dist = await distributions.findAllToGrid(recipient_id)
+            const dist = await distributions.findAllToGrid2(recipient_id)
+
             dist.sort((a, b) => b.folio - a.folio)
             console.log(dist)
             

@@ -13,7 +13,9 @@ const initialState = {
         Profile: { id: 0, key: 0, name: '' },
         name: '',
         pass: ''
-    }
+    },
+    update_folders: false,
+
 }
 
 const reducer = (state, action) => {
@@ -34,6 +36,8 @@ const reducer = (state, action) => {
             return { ...state, pageTitle: action.value }
         case 'SET_USER':
             return { ...state, user: action.value }
+        case 'UPDATE_FOLDERS':
+            return { ...state, update_folders: !state.update_folders }
 
         default:
     }
@@ -56,6 +60,10 @@ const AppProvider = ({ children }) => {
         dispatch({ type: 'SET_USER', value: user })
     }
 
+    const setUpdateFolders = (value) => {
+        dispatch({ type: 'UPDATE_FOLDERS', value })
+    }
+
 
 
     return (
@@ -63,10 +71,12 @@ const AppProvider = ({ children }) => {
             snack: state.snack,
             pageTitle: state.pageTitle,
             user: state.user,
+            update_folders: state.update_folders,
             dispatch,
             setPageTitle,
             openSnack,
-            setUser
+            setUser,
+            setUpdateFolders
            
         }}>
             {children}

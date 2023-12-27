@@ -70,11 +70,17 @@ export default function useRecipients() {
         return recipientsList
     }
 
+    const foldersQuanty = async (user_id) => {
+        const foldersQuanty_ = await recipients.findAllByUser(user_id)
+        return foldersQuanty_
+    }
+
     return {
         dataDefault,
         findAllToGrid,
         findAllToAutocomplete,
         create,
         findAllByUser,
+        foldersQuanty,
     }
 }

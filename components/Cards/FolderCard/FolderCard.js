@@ -1,12 +1,17 @@
-import { Card, Box, Typography, Button, Stack, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { Card, Box, Typography, Button, Stack, Dialog, DialogTitle, DialogContent, DialogActions, Avatar } from '@mui/material'
 import React, { use, useEffect, useState } from 'react'
 import { useTheme } from '@mui/material/styles'
 import useDistributions from '@/components/Hooks/useDistributions'
 import DistributionGrid from '@/components/Grids/DistributionsGrid/DistributionGrid'
 import TransparencyGrid from '@/components/Grids/TransparencyGrid'
+import { useAppContext } from '@/appProvider'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import AllDistributionGrid from '@/components/Grids/AllDistributionsGrid /AllDistributionGrid'
+
 
 export default function FolderCard(props) {
     const { folder } = props
+    const { update_folders } = useAppContext()
     const distributions = useDistributions()
     const theme = useTheme()
     const [distributionsList, setDistributionsList] = useState([])
@@ -14,17 +19,20 @@ export default function FolderCard(props) {
     const [openReceptionDialog, setOpenReceptionDialog] = useState(false)
     const [updateFoler, setUpdateFolder] = useState(false)
     const [openTransparencyDialog, setOpenTransparencyDialog] = useState(false)
+    const [allDocuments, setAllDocuments] = useState([])
+    const [openDocumentsDialog, setOpenDocumentsDialog] = useState(false)
 
     useEffect(() => {
         const fetch = async () => {
             const distributions_ = await distributions.findAllByRecipient(folder.id)
             const filteredDistributions = distributions_.filter(distribution => distribution.status > 1)
+            setAllDocuments(filteredDistributions)
             setDistributionsList(filteredDistributions)
             setPendings(filteredDistributions.filter(distribution => distribution.status === 2).length)
 
         }
         fetch()
-    }, [updateFoler])
+    }, [updateFoler, update_folders])
 
 
     // id: recipient.id,
@@ -41,6 +49,8 @@ export default function FolderCard(props) {
 
 
 
+
+
     return (
         <>
             <Card variant='outlined'>
@@ -48,13 +58,29 @@ export default function FolderCard(props) {
                     display="flex" flexDirection={'column'} justifyContent="space-between"
                     sx={{ padding: 1, backgroundColor: pendings === 0 ? '#c8e6c9' : '#ffcdd2' }}
                 >
-                    <Stack direction="column" spacing={.5}>
-                        <Typography variant={'h7'}>{folder.name}</Typography>
-                        <Typography variant={'caption'}>{folder.departmentName}</Typography>
-                        <Typography variant={'caption'}>Nro. documentos: {distributionsList.length}</Typography>
-                        <Typography variant={'caption'}>Pendientes: {pendings}</Typography>
+
+
+                    <Stack direction={'row'} spacing={1} alignContent={'space-between'} justifyContent={'space-between'} display={'flex'}>
+                        <Box>
+                            <Stack direction="column" spacing={.5}>
+                                <Typography variant={'h7'}>{folder.name}</Typography>
+                                <Typography variant={'caption'}>{folder.departmentName}</Typography>
+                                <Typography variant={'caption'}>Nro. documentos: {distributionsList.length}</Typography>
+                                <Typography variant={'caption'}>Pendientes: {pendings}</Typography>
+                            </Stack>
+                        </Box>
+                        <Box>
+                            <Button 
+                            disabled={allDocuments.length == 0 ? true : false} variant="outlined" size='small' startIcon={<VisibilityIcon />}
+                            onClick={() => { setOpenDocumentsDialog(true) }}
+                            >
+                                documentos
+                            </Button>
+                        </Box>
                     </Stack>
                 </Box>
+
+
                 <Box
                     display="flex"
                     flexDirection={'row'}
@@ -98,6 +124,14 @@ export default function FolderCard(props) {
                 <DialogContent sx={{ padding: 1 }}>
                     <TransparencyGrid recipient_id={folder.id} closeDialog={() => { setOpenTransparencyDialog(false) }} />
                     {/* <DistributionGrid recipient_id={folder.id} updateFolder={()=>{setUpdateFolder(!updateFoler)}} closeDialog={() => {setOpenReceptionDialog(false)}}/> */}
+                </DialogContent>
+            </Dialog>
+
+
+            <Dialog open={openDocumentsDialog} maxWidth={'lg'} fullWidth onClose={() => { setOpenDocumentsDialog(false)}}>
+                <DialogTitle sx={{ padding: 2 }}>Documentos en carpeta {folder.name}</DialogTitle>
+                <DialogContent sx={{ padding: 1 }}>
+                    <AllDistributionGrid recipient_id={folder.id} updateFolder={() => { setUpdateFolder(!updateFoler) }} closeDialog={() => { setOpenReceptionDialog(false) }} />
                 </DialogContent>
             </Dialog>
         </>

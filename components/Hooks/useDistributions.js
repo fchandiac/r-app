@@ -3,6 +3,7 @@ import React from 'react'
 const distributions = require('../../services/distributions')
 const decrees = require('../../services/decrees')
 const recipients = require('../../services/recipients')
+const mails = require('../../services/mails')
 
 
 
@@ -39,7 +40,16 @@ export default function useDistributions() {
                 const decree = await findDecreeToDistribution(distribution.reference_id, distribution.id)
                 distributionsList.push(decree)
             }
-        }));
+        }))
+
+        await Promise.all(filteredDistributions.map(async distribution => {
+            if (parseInt(distribution.reference_type) === 1) {
+                const mail = await findMailToDistribution(distribution.reference_id, distribution.id)
+                distributionsList.push(mail)
+            }
+        }))
+
+        console.log('distributionsList',distributionsList)
 
         return distributionsList;
     }
@@ -55,6 +65,7 @@ export default function useDistributions() {
                 distributionsList.push(decree)
             }
         }));
+
 
         return distributionsList;
     }
@@ -86,6 +97,22 @@ export default function useDistributions() {
         dist = { ...dist, id: decree.id }
         dist = { ...dist, year: decree.year }
         dist = { ...dist, url: decree.Attachment ? decree.Attachment.url : '' }
+        dist = { ...dist, distribution_id: distribution_id }
+
+        return dist
+    }
+
+    const findMailToDistribution = async (mail_id, distribution_id) => {
+       const mail = await mails.findOneById(mail_id)
+        console.log(mail)
+        let dist = {}
+        dist = { ...dist, matter: mail.matter }
+        dist = { ...dist, folio: mail.folio }
+        dist = { ...dist, date: mail.date }
+        dist = { ...dist, type: mail.MailReference.name }
+        dist = { ...dist, id: mail.id }
+        dist = { ...dist, year: mail.year }
+        dist = { ...dist, url: mail.Attachment ? mail.Attachment.url : '' }
         dist = { ...dist, distribution_id: distribution_id }
 
         return dist
@@ -125,6 +152,63 @@ export default function useDistributions() {
         return distribution
     }
 
+    const totalDocumentsByUser = async (user_id) => {
+        const recipients_ = await recipients.findAllByUser(user_id)
+        let count = 0
+        await Promise.all(recipients_.map(async recipient => {
+            const distributions_ = await distributions.findAllByRecipient(recipient.id)
+            const filteredDistributions = distributions_.filter(distribution => distribution.status >= 2)
+            
+            count += filteredDistributions.length
+        }))
+        return count
+    }
+
+    const totalCompleteDocumentsByUser = async (user_id) => {
+        const recipients_ = await recipients.findAllByUser(user_id)
+        let count = 0
+        await Promise.all(recipients_.map(async recipient => {
+            const distributions_ = await distributions.findAllByRecipient(recipient.id)
+            const filteredDistributions = distributions_.filter(distribution => distribution.status == 3)
+            count += filteredDistributions.length
+        }))
+        return count
+    }
+
+    const totalPendingDocumentsByUser = async (user_id) => {
+        const recipients_ = await recipients.findAllByUser(user_id)
+        let count = 0
+        await Promise.all(recipients_.map(async recipient => {
+            const distributions_ = await distributions.findAllByRecipient(recipient.id)
+            const filteredDistributions = distributions_.filter(distribution => distribution.status == 2)
+            
+            count += filteredDistributions.length
+        }))
+        return count
+    }
+
+    const findAllToGrid2 = async (recipient_id) => {
+        const distributions_ = await distributions.findAllByRecipient(recipient_id)
+        const filteredDistributions = distributions_.filter(distribution => distribution.status >= 2)
+        console.log(filteredDistributions)
+        const distributionsList = []
+
+        await Promise.all(filteredDistributions.map(async distribution => {
+            if (parseInt(distribution.reference_type) === 0) {
+                const decree = await findDecreeToDistribution(distribution.reference_id, distribution.id)
+                distributionsList.push(decree)
+            }
+        }));
+
+        await Promise.all(filteredDistributions.map(async distribution => {
+            if (parseInt(distribution.reference_type) === 1) {
+                const mail = await findMailToDistribution(distribution.reference_id, distribution.id)
+                distributionsList.push(mail)
+            }
+        }))
+
+        return distributionsList;
+    }
 
 
 
@@ -141,6 +225,10 @@ export default function useDistributions() {
         findAllToGrid,
         updateStatus,
         findAllToTransparencyGrid,
+        totalDocumentsByUser,
+        totalCompleteDocumentsByUser,
+        totalPendingDocumentsByUser,
+        findAllToGrid2,
 
     }
 }

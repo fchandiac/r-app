@@ -10,7 +10,10 @@ body {
   padding: 0.35rem;
 } */
 
-.data-grid-last-column-header .MuiDataGrid-columnSeparator {
+
+
+
+.data-grid-last-column-header .MuiDataGrid-columnSeparator .MuiDataGrid-cell--textCenter  {
   display: none;
 }
 
@@ -71,6 +74,8 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: .8rem;
   padding: 1;
 } 
+
+
 
 .small-date-picker .css-i4bv87-MuiSvgIcon-root {
   height: 1.2rem;
