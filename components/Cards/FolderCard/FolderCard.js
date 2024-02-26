@@ -110,7 +110,6 @@ export default function FolderCard(props) {
             </Card>
 
             <Dialog open={openReceptionDialog} maxWidth={'lg'} fullWidth onClose={() => { setOpenReceptionDialog(false) }}>
-                <DialogTitle sx={{ padding: 2 }}>Recepción de documentos</DialogTitle>
                 <DialogContent sx={{ padding: 1 }}>
                     <DistributionGrid recipient_id={folder.id} updateFolder={() => { setUpdateFolder(!updateFoler) }} closeDialog={() => { setOpenReceptionDialog(false) }} />
                 </DialogContent>
@@ -129,7 +128,6 @@ export default function FolderCard(props) {
 
 
             <Dialog open={openDocumentsDialog} maxWidth={'lg'} fullWidth onClose={() => { setOpenDocumentsDialog(false)}}>
-                <DialogTitle sx={{ padding: 2 }}>Documentos en carpeta {folder.name}</DialogTitle>
                 <DialogContent sx={{ padding: 1 }}>
                     <AllDistributionGrid recipient_id={folder.id} updateFolder={() => { setUpdateFolder(!updateFoler) }} closeDialog={() => { setOpenReceptionDialog(false) }} />
                 </DialogContent>

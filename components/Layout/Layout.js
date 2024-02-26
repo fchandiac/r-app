@@ -8,6 +8,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import ChevronLeft from '@mui/icons-material/ChevronLeft'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 
+
+
 import { useRouter } from 'next/router'
 
 
@@ -15,6 +17,12 @@ import { useAppContext } from '../../appProvider'
 import Snack from '../Karmextron/Snack/Snack'
 import useUsers from '../Hooks/useUsers'
 import RefreshIcon from '@mui/icons-material/Refresh'
+
+
+
+const config= require('../../config.js')
+const server_url = config.serverUrl
+
 
 
 
@@ -74,9 +82,9 @@ export default function Layout(props) {
                     <Box paddingTop={1} marginRight={3}>
                         <Typography variant="body">Sistema de Gestión Documental</Typography>
                         <br />
-                        <Typography variant="caption">Destinatario v1.0.2</Typography>
+                        <Typography variant="caption">Distribución v1.0.3</Typography>
                     </Box>
-                    <Divider orientation="vertical" flexItem style={{ backgroundColor: 'white', height: 'auto', width:2, marginRight:15, marginTop:3, marginBottom:3 }} />
+                    <Divider orientation="vertical" flexItem style={{ backgroundColor: 'white', height: 'auto', width: 2, marginRight: 15, marginTop: 3, marginBottom: 3 }} />
 
                     <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                         {pageTitle}
@@ -107,12 +115,19 @@ export default function Layout(props) {
                             <RefreshIcon />
                         </IconButton>
                         <Button
-                            sx={{ marginLeft: 1 }}
+                            sx={{ marginLeft: 2, marginRight: 5 }}
                             color='inherit'
                             variant='outlined'
                             onClick={() => { router.push({ pathname: '/' }) }}
                             size='small'
                         >Salir</Button>
+
+                        <CardMedia
+                            component="img"
+                            image={server_url + '/logo-white.png'}
+                            alt="logo"
+                            sx={{ width: '48px' }}
+                        />
 
 
                     </Box>

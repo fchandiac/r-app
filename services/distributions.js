@@ -119,10 +119,36 @@ function updateStatus(id, status, user_update_id) {
 }
 
 
+
+
+function updateRecipient(id, recipient_id) {
+    let data = { id, recipient_id }
+    console.log('data', data)
+    // let server_url = ipcRenderer.sendSync('server-url', 'sync')
+    const distribution_ = new Promise((resolve, reject) => {
+        fetch(server_url + 'distributions/updateRecipient', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(res => {
+            res.json().then(res => {
+                if (res.code === 0) {
+                    reject(res.data)
+                } else {
+                    resolve(res.data)
+                }
+            })
+        }).catch(err => {
+            reject(err)
+        })
+    })
+    return distribution_
+}
 export {
     create,
     findAllByReference,
     findAllByRecipient,
     findOneById,
-    updateStatus
+    updateStatus,
+    updateRecipient
 }

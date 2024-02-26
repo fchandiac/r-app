@@ -210,6 +210,13 @@ export default function useDistributions() {
         return distributionsList;
     }
 
+ 
+
+    const updateRecipient = async (id, recipient_id) => {
+        const distribution = await distributions.updateRecipient(id, recipient_id)
+        return distribution
+    }
+
 
 
 
@@ -229,6 +236,7 @@ export default function useDistributions() {
         totalCompleteDocumentsByUser,
         totalPendingDocumentsByUser,
         findAllToGrid2,
+        updateRecipient
 
     }
 }

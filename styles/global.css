@@ -13,8 +13,14 @@ body {
 
 
 
-.data-grid-last-column-header .MuiDataGrid-columnSeparator .MuiDataGrid-cell--textCenter  {
+/* .data-grid-last-column-header .MuiDataGrid-columnSeparator .MuiDataGrid-cell--textCenter  {
   display: none;
+} */
+
+.data-grid-last-column-header .MuiDataGrid-columnSeparator {
+  display: none;
+
+
 }
 
 .data-grid-cell-green {
